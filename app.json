@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "frontend",
-    "slug": "frontend",
+    "name": "Social_Media_App_Native",
+    "slug": "Social_Media_App_Native",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

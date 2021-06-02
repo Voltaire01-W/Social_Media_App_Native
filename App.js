@@ -1,5 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
+import jwtDecode from 'jwt-decode';
+import { logoutUser, getUserData } from './redux/actions/index';
+import axios from 'axios';
 import { 
   API_KEY, 
   AUTH_DOMAIN, 
@@ -23,6 +26,8 @@ import RegisterScreen from './components/auth/Register';
 import LoginScreen from './components/auth/Login';
 import MainScreen from './components/Main';
 import AddScreen from './components/main/Add';
+import SaveScreen from './components/main/Save';
+import CommentScreen from './components/main/Comment';
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
@@ -41,6 +46,22 @@ const firebaseConfig = {
 if(firebase.apps.length === 0){
   firebase.initializeApp(firebaseConfig);
 }
+
+axios.defaults.baseURL = 
+  'https://us-central1-socialape-14249.cloudfunctions.net/api'
+
+  const token = localStorage.FBIdToken;
+  if(token) {
+    const decodedToken = jwtDecode(token);
+    if(decodedToken.exp * 1000 < Date.now()) {
+      store.dispatch(logoutUser())
+      this.props.navigation.navigate("Landing")
+    } else {
+      store.dispatch({ type: SET_AUTHENTICATED });
+      axios.defaults.headers.common['Authorization'] = token;
+      store.dispatch(getUserData());
+    }
+  }
 
 export class App extends Component {
   constructor(props){
@@ -93,7 +114,9 @@ export class App extends Component {
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Main">
             <Stack.Screen name="Main" component={MainScreen} options={{ headerShown: false }}/>
-            <Stack.Screen name="Add" component={AddScreen} />
+            <Stack.Screen name="Add" component={AddScreen} navigation={this.props.navigation} />
+            <Stack.Screen name="Save" component={SaveScreen} navigation={this.props.navigation} />
+            <Stack.Screen name="Comment" component={CommentScreen} navigation={this.props.navigation} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

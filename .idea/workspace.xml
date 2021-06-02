@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="81091937-fe84-4113-81cb-16eebcc4068c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Main.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/auth/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/auth/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/auth/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/auth/Register.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/main/Add.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/main/Add.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/main/Feed.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/main/Feed.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/main/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/main/Profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.yarn-integrity" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.yarn-integrity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/actions/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/redux/actions/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/constants/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/redux/constants/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/reducers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/redux/reducers/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/reducers/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/redux/reducers/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/store/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1tMST9JOkcXwFQYiTX9vd6cKwyt" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="81091937-fe84-4113-81cb-16eebcc4068c" name="Default Changelist" comment="" />
+      <created>1622577469451</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1622577469451</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="99" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1622577627350">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="99" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1622577627350" />
+    <state x="307" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1622577757042">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="307" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1622577757042" />
+  </component>
+</project>

@@ -1,7 +1,23 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import firebase from "firebase";
 
 export default class LoginScreen extends Component {
+    state = {
+        email: "",
+        password: "",
+        errorMessage: null
+    };
+
+    handleLogin = () => {
+        const { email, password } = this.state;
+
+        firebase
+            .auth()
+            .signInWithEmailAndPassword(email, password)
+            .catch(error => this.setState({ errorMessage: error.message }))
+        }
+
     render() {
         return (
             <View style={styles.container}>
@@ -9,23 +25,40 @@ export default class LoginScreen extends Component {
                     {'Hello again.\nWelcome back.'}
                 </Text>
                 <View style={styles.errorMessage}>
-                    <Text>Error</Text>
+                    {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
                 </View>
 
                 <View style={styles.form}>
                     <View>
                         <Text style={styles.inputTitle}>Email Address</Text>
-                        <TextInput style={styles.input} autoCapitalize="none"></TextInput>
+                        <TextInput 
+                            style={styles.input} 
+                            autoCapitalize="none" 
+                            onChangeText={email => this.setState({ email })}
+                            value={this.state.email}
+                        ></TextInput>
                     </View>
 
                     <View style={{ marginTop: 32 }}>
                         <Text style={styles.inputTitle}>Password</Text>
-                        <TextInput style={styles.input} secureTextEntry autoCapitalize="none"></TextInput>
+                        <TextInput 
+                            style={styles.input} 
+                            secureTextEntry 
+                            autoCapitalize="none"
+                            onChangeText={password => this.setState({ password })}
+                            value={this.state.password}
+                        ></TextInput>
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={this.handleLogin}>
                     <Text style={{ color: "#FFF", fontWeight: "500" }}>Sign in</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{alignSelf: "center", marginTop: 32 }}>
+                    <Text style={{ color: "#414959", fontSize: 13 }}>
+                        New to Firebird? <Text style={{ fontWeight: "500", color: "#E9446A" }}>Sign Up</Text>
+                    </Text>
                 </TouchableOpacity>
             </View>
 
@@ -48,6 +81,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginHorizontal: 30
+    },
+    error: {
+        color: "#E9446A",
+        fontWeight: "600",
+        textAlign: "center"
     },
     form: {
         marginBottom: 48,

@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ImageBackground, StatusBar } from 'react-native';
 import firebase from "firebase";
+import { Ionicons } from "@expo/vector-icons";
 
 export default class RegisterScreen extends Component {
+    static navigationOptions = {
+        headerShown: false
+    };
+
     state = {
         name: "",
         email: "",
@@ -26,10 +31,25 @@ export default class RegisterScreen extends Component {
 
     render() {
         return (
+        <ImageBackground
+            source={require("../assets/phoenixsignup.png")}
+            style={{ flex: 1 }}
+        >
             <View style={styles.container}>
-                <Text style={styles.greeting}>
-                    {'Hello.\nSign up to get started.'}
-                </Text>
+                <StatusBar barStyle="light-content"></StatusBar>
+                <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.goBack()}>
+                    <Ionicons name="arrow-back" size={32} color="#FFF"></Ionicons>
+                </TouchableOpacity>
+
+                <View>
+                    <Text style={styles.greeting}>
+                        {'Welcome.\nSign up to get started.'}
+                    </Text>
+                    <TouchableOpacity style={styles.avatar}>
+                        <Ionicons name="add" size={40} color="#FFF" style={{ marginTop: 6, marginLeft: 2}}></Ionicons>
+                    </TouchableOpacity>
+                </View>
+
                 <View style={styles.errorMessage}>
                     {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
                 </View>
@@ -68,19 +88,34 @@ export default class RegisterScreen extends Component {
                 </View>
 
                 <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
-                    <Text style={{ color: "#FFF", fontWeight: "500" }}>Sign up</Text>
+                    <Text style={{ color: "#FFF", fontWeight: "bold" }}>Sign up</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity 
                     style={{alignSelf: "center", marginTop: 32 }}
                     onPress={() => this.props.navigation.navigate("Login")}
                 >
-                    <Text style={{ color: "#414959", fontSize: 13 }}>
-                        Already have an account? <Text style={{ fontWeight: "500", color: "#E9446A" }}>Login</Text>
+                    <Text style={{ 
+                            color: "white", 
+                            fontSize: 15,
+                            fontWeight: "bold",
+                            textShadowColor: "black",
+                            textShadowRadius: 10 
+                        }}    
+                    >
+                        Already have an account?{' '}
+                            <Text style={{ 
+                                fontWeight: "bold", 
+                                color: "white", 
+                                textShadowColor: "black", 
+                                textShadowRadius: 10,
+                                textDecorationLine: "underline"
+                            }}
+                            >Login</Text>
                     </Text>
                 </TouchableOpacity>
             </View>
-
+        </ImageBackground>
         )
     }
 }
@@ -90,10 +125,14 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     greeting: {
-        marginTop: 32,
-        fontSize: 18,
-        fontWeight: "400",
-        textAlign: "center"
+        marginTop: 36,
+        marginBottom: 45,
+        fontSize: 20,
+        fontWeight: "bold",
+        textAlign: "center",
+        textShadowColor: "black",
+        textShadowRadius: 10,
+        color: "white"
     },
     errorMessage: {
         height: 72,
@@ -102,8 +141,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 30
     },
     error: {
-        color: "#E9446A",
-        fontWeight: "600",
+        color: "#C62828",
+        fontWeight: "bold",
         textAlign: "center"
     },
     form: {
@@ -111,23 +150,48 @@ const styles = StyleSheet.create({
         marginHorizontal: 30
     },
     inputTitle: {
-        color: "#8A8F9E",
-        fontSize: 10,
+        color: "black",
+        fontWeight: "bold",
+        fontSize: 15,
         textTransform: "uppercase"
     },
     input: {
-        borderBottomColor: "#8A8F9E",
+        borderBottomColor: "black",
         borderBottomWidth: StyleSheet.hairlineWidth,
         height: 40,
         fontSize: 15,
-        color: "#161F3D"
+        fontWeight: "bold",
+        color: "black"
     },
     button: {
         marginHorizontal: 30,
-        backgroundColor: "#E9446A",
+        backgroundColor: "#C62828",
         borderRadius: 4,
         height: 52,
         alignItems: "center",
         justifyContent: "center"
+    },
+    back: {
+        position: "absolute",
+        top: 48,
+        left: 32,
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        backgroundColor: "rgba(21, 22, 48, 0.1)",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    avatar: {
+        position: "absolute",
+        top: 90,
+        left: 150,
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        backgroundColor: "#E1E2E6",
+        marginTop: 20,
+        justifyContent: "center",
+        alignItems: "center"
     }
 })

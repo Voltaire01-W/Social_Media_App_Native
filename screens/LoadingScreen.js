@@ -12,7 +12,7 @@ export default class LoadingScreen extends Component {
         return (
             <View style={styles.container}>
                 <Text>Loading...</Text>
-                <ActivityIndicator size="Large"></ActivityIndicator>
+                {/* <ActivityIndicator size="Large"></ActivityIndicator> */}
             </View>
         )
     }

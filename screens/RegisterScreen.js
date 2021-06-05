@@ -37,6 +37,7 @@ export default class RegisterScreen extends Component {
         >
             <View style={styles.container}>
                 <StatusBar barStyle="light-content"></StatusBar>
+
                 <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.goBack()}>
                     <Ionicons name="arrow-back" size={32} color="#FFF"></Ionicons>
                 </TouchableOpacity>
@@ -78,7 +79,7 @@ export default class RegisterScreen extends Component {
                     <View style={{ marginTop: 32 }}>
                         <Text style={styles.inputTitle}>Password</Text>
                         <TextInput 
-                            style={styles.input} 
+                            style={styles.inputWhite} 
                             secureTextEntry 
                             autoCapitalize="none"
                             onChangeText={password => this.setState({ password })}
@@ -160,8 +161,20 @@ const styles = StyleSheet.create({
         borderBottomWidth: StyleSheet.hairlineWidth,
         height: 40,
         fontSize: 15,
-        fontWeight: "bold",
-        color: "black"
+        textShadowColor: "black",
+        textShadowRadius: 10,
+        color: "white",
+        fontWeight: "bold"
+    },
+    inputWhite: {
+        borderBottomColor: "black",
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        height: 40,
+        fontSize: 15,
+        textShadowColor: "black",
+        textShadowRadius: 10,
+        color: "black",
+        fontWeight: "bold"
     },
     button: {
         marginHorizontal: 30,
@@ -172,12 +185,13 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     back: {
-        position: "absolute",
-        top: 48,
+        // position: "absolute",
+        
+        top: 32,
         left: 32,
         width: 32,
         height: 32,
-        borderRadius: 16,
+        borderRadius: 32,
         backgroundColor: "rgba(21, 22, 48, 0.1)",
         alignItems: "center",
         justifyContent: "center"

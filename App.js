@@ -5,8 +5,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import firebase from 'firebase';
-import { firebaseConfig } from './config/config';
 
 import LoadingScreen from './screens/LoadingScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -18,57 +16,75 @@ import NotificationScreen from './screens/NotificationScreen';
 import PostScreen from './screens/PostScreen';
 import ProfileScreen from './screens/ProfileScreen';
 
-firebase.initializeApp(firebaseConfig);
-
-const AppStack = createBottomTabNavigator(
+const AppContainer = createStackNavigator(
     {
-        Home: {
-            screen: HomeScreen,
-            navigationOptions: {
-                tabBarIcon: ({ tintColor }) => <Ionicons name="home" size={24} color={tintColor} />
+        default: createBottomTabNavigator(
+            {
+                Home: {
+                    screen: HomeScreen,
+                    navigationOptions: {
+                        tabBarIcon: ({ tintColor }) => <Ionicons name="home" size={24} color={tintColor} />
+                    }
+                },
+                Message: {
+                    screen: MessageScreen,
+                    navigationOptions: {
+                        tabBarIcon: ({ tintColor }) => <Ionicons name="chatbubbles" size={24} color={tintColor} />
+                    }
+                },
+                Post: {
+                    screen: PostScreen,
+                    navigationOptions: {
+                        tabBarIcon: ({ tintColor }) => 
+                            <Ionicons 
+                                name="add-circle" 
+                                size={48} 
+                                color="#C62828"
+                                style={{
+                                    shadowColor: "#C62828",
+                                    shadowOffset: { width: 0, height: 10 },
+                                    shadowRadius: 10,
+                                    shadowOpacity: 0.3
+                                }} />
+                    }
+                },
+                Notification: {
+                    screen: NotificationScreen,
+                    navigationOptions: {
+                        tabBarIcon: ({ tintColor }) => <Ionicons name="notifications" size={24} color={tintColor} />
+                    }
+                },
+                Profile: {
+                    screen: ProfileScreen,
+                    navigationOptions: {
+                        tabBarIcon: ({ tintColor }) => <Ionicons name="person" size={24} color={tintColor} />
+                    }
+                }
+            },
+            {
+                defaultNavigationOptions: {
+                    tabBarOnPress: ({ navigation, defaultHandler }) => {
+                        if (navigation.state.key === "Post") {
+                            navigation.navigate("postModal")
+                        } else {
+                            defaultHandler()
+                        }
+                    }
+                },
+                tabBarOptions: {
+                    activeTintColor: "#C62828",
+                    inactiveTintColor: "#BBBBC4",
+                    showLabel: false
+                }
             }
-        },
-        Message: {
-            screen: MessageScreen,
-            navigationOptions: {
-                tabBarIcon: ({ tintColor }) => <Ionicons name="chatbubbles" size={24} color={tintColor} />
-            }
-        },
-        Post: {
-            screen: PostScreen,
-            navigationOptions: {
-                tabBarIcon: ({ tintColor }) => 
-                    <Ionicons 
-                        name="add-circle" 
-                        size={40} 
-                        color="#C62828"
-                        style={{
-                            shadowColor: "#E9446A",
-                            shadowOffset: { width: 0, height: 0 },
-                            shadowRadius: 10,
-                            shadowOpacity: 0.3
-                        }} />
-            }
-        },
-        Notification: {
-            screen: NotificationScreen,
-            navigationOptions: {
-                tabBarIcon: ({ tintColor }) => <Ionicons name="notifications" size={24} color={tintColor} />
-            }
-        },
-        Profile: {
-            screen: ProfileScreen,
-            navigationOptions: {
-                tabBarIcon: ({ tintColor }) => <Ionicons name="person" size={24} color={tintColor} />
-            }
+        ),
+        postModal: {
+            screen: PostScreen
         }
     },
     {
-        tabBarOptions: {
-            activeTintColor: "#C62828",
-            inactiveTintColor: "#BBBBC4",
-            showLabel: false
-        }
+        mode: "modal",
+        headerMode: "none",
     }
 );
 
@@ -81,7 +97,7 @@ export default createAppContainer(
     createSwitchNavigator(
         {
             Loading: LoadingScreen,
-            App: AppStack,
+            App: AppContainer,
             Auth: AuthStack
         },
         {

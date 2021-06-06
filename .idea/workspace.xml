@@ -7,7 +7,9 @@
     <list default="true" id="eaa2faf9-1189-498d-a028-100ea15061a4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/HomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/HomeScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fire.js" beforeDir="false" afterPath="$PROJECT_DIR$/Fire.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/LoadingScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/LoadingScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/PostScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/PostScreen.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,9 +41,9 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="114" y="118" width="1060" height="440" key="AVDManager" timestamp="1622856117391">
+    <state x="114" y="118" width="1060" height="440" key="AVDManager" timestamp="1622923731559">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="114" y="118" width="1060" height="440" key="AVDManager/0.0.1280.680@0.0.1280.680" timestamp="1622856117391" />
+    <state x="114" y="118" width="1060" height="440" key="AVDManager/0.0.1280.680@0.0.1280.680" timestamp="1622923731559" />
   </component>
 </project>

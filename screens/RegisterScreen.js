@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ImageBackground, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ImageBackground, StatusBar, Image } from 'react-native';
 import firebase from "firebase";
 import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
+import UserPermissions from '../utilities/UserPermissions';
+import Fire from '../Fire';
 
 export default class RegisterScreen extends Component {
     static navigationOptions = {
@@ -9,24 +12,33 @@ export default class RegisterScreen extends Component {
     };
 
     state = {
-        name: "",
-        email: "",
-        password: "",
+        user: {
+            name: "",
+            email: "",
+            password: "",
+            avatar: null,
+        },
         errorMessage: null
     };
 
+    handlePickAvatar = async () => {
+        UserPermissions.getCameraPermission();
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+        });
+        console.log(result);
+
+        if (!result.cancelled) {
+            this.setState({ user: {...this.state.user, avatar: result.uri }})
+        }
+    };
+
     handleSignUp = () => {
-        firebase
-            .auth()
-            .createUserWithEmailAndPassword(
-                this.state.email, this.state.password
-            )
-            .then(userCredentials => {
-                return userCredentials.user.updateProfile({
-                    displayName: this.state.name
-                })
-            })
-            .catch(error => this.setState({ errorMessage: error.message }));
+        Fire.shared.createUser(this.state.user);
     }
 
     render() {
@@ -46,7 +58,8 @@ export default class RegisterScreen extends Component {
                     <Text style={styles.greeting}>
                         {'Welcome.\nSign up to get started.'}
                     </Text>
-                    <TouchableOpacity style={styles.avatar}>
+                    <TouchableOpacity style={styles.avatarPlaceholder} onPress={this.handlePickAvatar}>
+                        <Image source={{ uri: this.state.user.avatar }} style={styles.avatar} />
                         <Ionicons name="add" size={40} color="#FFF" style={{ marginTop: 6, marginLeft: 2}}></Ionicons>
                     </TouchableOpacity>
                 </View>
@@ -61,8 +74,8 @@ export default class RegisterScreen extends Component {
                         <TextInput 
                             style={styles.input} 
                             autoCapitalize="none" 
-                            onChangeText={name => this.setState({ name })}
-                            value={this.state.name}
+                            onChangeText={name => this.setState({ user: { ...this.state.user, name} })}
+                            value={this.state.user.name}
                         ></TextInput>
                     </View>
 
@@ -71,8 +84,8 @@ export default class RegisterScreen extends Component {
                         <TextInput 
                             style={styles.input} 
                             autoCapitalize="none" 
-                            onChangeText={email => this.setState({ email })}
-                            value={this.state.email}
+                            onChangeText={email => this.setState({ user: { ...this.state.user, email} })}
+                            value={this.state.user.email}
                         ></TextInput>
                     </View>
 
@@ -82,8 +95,8 @@ export default class RegisterScreen extends Component {
                             style={styles.inputWhite} 
                             secureTextEntry 
                             autoCapitalize="none"
-                            onChangeText={password => this.setState({ password })}
-                            value={this.state.password}
+                            onChangeText={password => this.setState({ user: { ...this.state.user, password} })}
+                            value={this.state.user.password}
                         ></TextInput>
                     </View>
                 </View>
@@ -196,7 +209,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
-    avatar: {
+    avatarPlaceholder: {
         position: "absolute",
         top: 90,
         left: 150,
@@ -207,5 +220,13 @@ const styles = StyleSheet.create({
         marginTop: 20,
         justifyContent: "center",
         alignItems: "center"
+    },
+    avatar: {
+        position: "absolute",
+        top: 90,
+        left: 150,
+        width: 100,
+        height: 100,
+        borderRadius: 50
     }
 })

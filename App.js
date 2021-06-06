@@ -41,6 +41,7 @@ const AppContainer = createStackNavigator(
                                 size={48} 
                                 color="#C62828"
                                 style={{
+                                    marginLeft: 2,
                                     shadowColor: "#C62828",
                                     shadowOffset: { width: 0, height: 10 },
                                     shadowRadius: 10,
@@ -75,7 +76,8 @@ const AppContainer = createStackNavigator(
                     activeTintColor: "#C62828",
                     inactiveTintColor: "#BBBBC4",
                     showLabel: false
-                }
+                },
+                initialRouteName: "Profile"
             }
         ),
         postModal: {
@@ -91,6 +93,9 @@ const AppContainer = createStackNavigator(
 const AuthStack = createStackNavigator({
     Login: LoginScreen,
     Register: RegisterScreen
+},
+{
+    initialRouteName: "Register"
 });
 
 export default createAppContainer(

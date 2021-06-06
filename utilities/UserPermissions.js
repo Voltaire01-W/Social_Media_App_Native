@@ -1,16 +1,13 @@
-import Constants from "expo-constants";
-import * as Permissions from "expo-permissions";
+import { Camera } from "expo-camera"
 
 class UserPermissions { 
-    getCameraPermission = async () => {
-        if (Constants.platform.ios) {
-            const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+    getCameraPermission = async () => { 
+        const { status } = await Camera.requestPermissionsAsync();
 
-            if (status != "granted") {
-                alert("We need permission to use your camera roll if you'd like to add a photo.");
-            }
-        }
-    };
+        if (status != 'granted') {
+            alert("We need permission to use your camera roll")
+        };
+    }
 }
 
 export default new UserPermissions();

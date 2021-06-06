@@ -1,7 +1,6 @@
 import React from "react";
 
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
-import { View, Text, StyleSheet } from 'react-native';
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { Ionicons } from "@expo/vector-icons";
@@ -76,8 +75,7 @@ const AppContainer = createStackNavigator(
                     activeTintColor: "#C62828",
                     inactiveTintColor: "#BBBBC4",
                     showLabel: false
-                },
-                initialRouteName: "Profile"
+                }
             }
         ),
         postModal: {
@@ -93,9 +91,6 @@ const AppContainer = createStackNavigator(
 const AuthStack = createStackNavigator({
     Login: LoginScreen,
     Register: RegisterScreen
-},
-{
-    initialRouteName: "Register"
 });
 
 export default createAppContainer(
@@ -110,7 +105,3 @@ export default createAppContainer(
         }
     )
 )
-
-const styles = StyleSheet.create({
-
-})

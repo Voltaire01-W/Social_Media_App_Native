@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
         height: 40,
         fontSize: 15,
         textShadowColor: "black",
-        textShadowRadius: 10,
+        textShadowRadius: 5,
         color: "white",
         fontWeight: "bold"
     },
@@ -223,10 +223,11 @@ const styles = StyleSheet.create({
     },
     avatar: {
         position: "absolute",
-        top: 90,
-        left: 150,
         width: 100,
         height: 100,
-        borderRadius: 50
+        borderRadius: 50,
+        marginTop: 20,
+        justifyContent: "center",
+        alignItems: "center"
     }
 })

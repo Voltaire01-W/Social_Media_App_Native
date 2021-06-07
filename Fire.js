@@ -61,7 +61,14 @@ class Fire {
             db.set({
                 name: user.name,
                 email: user.email,
-                avatar: null
+                avatar: null,
+                followers: [],
+                following: [],
+                requests: [],
+                comments: [],
+                messages: [],
+                about: 'About me',
+                website: ''
             })
 
             if (user.avatar) {

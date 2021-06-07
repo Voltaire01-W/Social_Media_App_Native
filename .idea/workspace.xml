@@ -23,6 +23,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/socially-master/socially-master" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -41,5 +42,9 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="114" y="118" width="1060" height="440" key="AVDManager/0.0.1280.680@0.0.1280.680" timestamp="1622923731559" />
+    <state x="425" y="93" key="FileChooserDialogImpl" timestamp="1623085904742">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="425" y="93" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1623085904742" />
   </component>
 </project>

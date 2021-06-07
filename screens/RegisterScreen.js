@@ -17,6 +17,13 @@ export default class RegisterScreen extends Component {
             email: "",
             password: "",
             avatar: null,
+            followers: [],
+            following: [],
+            requests: [],
+            comments: [],
+            messages: [],
+            about: 'About me',
+            website: ''
         },
         errorMessage: null
     };

@@ -1,63 +1,249 @@
  import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
+ import {
+    View,
+    FlatList,
+    RefreshControl,
+    ActivityIndicator,
+    Dimensions,
+    Image,
+    StatusBar,
+    StyleSheet
+} from "react-native";
+import Fire from '../Fire'
 import { Ionicons } from "@expo/vector-icons";
+import Header from '../components/Header'
 import moment from 'moment'
+import PostCard from '../components/PostCard'
+import Entypo from 'react-native-vector-icons/Entypo'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { TouchableRipple } from "react-native-paper";
 
-const posts = [
-    {
-        id: "1",
-        name: "Connor Clark",
-        text: "Test post for posting functionality yeehaw.",
-        timestamp: 1569109283826,
-        avatar: require("../assets/tempAvatar.jpg"),
-        image: require("../assets/tempImage1.jpg")
-    },
-]
+let onEndReachedCalledDuringMomentum = false;
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export default class HomeScreen extends Component {
-    renderPost = post => {
+    constructor(props) {
+        super(props)
+        this.state = {
+            uid: Fire.shared.uid,
+            isLoading: null,
+            moreLoading: null,
+            lastDoc: [],
+            posts: [],
+            myFollowing: []
+        }
+    }
+
+    componentDidMount() {
+        this.getFollowing();
+    }
+
+    getFollowing = () => {
+        this.setState({ isLoading: true });
+        Fire.shared
+            .firestore
+            .collection('users')
+            .doc(Fire.shared.uid)
+            .get()
+                .then((snap) => this.setState({ myFollowing: snap.data().following }))
+                .then(() => this.getPosts())
+    }
+
+    getPosts = async () => {
+        this.setState({ isLoading: true });
+        const snapshot = await Fire.shared
+                                    .firestore
+                                    .collection('posts')
+                                    .orderBy('timestamp', 'desc')
+                                    .limit(10)
+                                    .get();
+        if (!snapshot.empty) {
+            let newPosts = [];
+            this.setState({ lastDoc: snapshot.docs[snapshot.docs.length - 1] });
+
+            for (let i = 0; i < snapshot.docs.length; i++) {
+                let userData = {}
+                console.log(snapshot.docs[i].data().userId)
+
+                if (this.state.myFollowing.includes(snapshot.docs[i].data().userId) || 
+                    snapshot.docs[i].data().userId === Fire.shared.uid) {
+                    Fire.shared
+                        .firestore
+                        .collection('users')
+                        .doc(snapshot.docs[i].data().userId)
+                        .get()
+                            .then(snap => userData = snap.data())
+                            .then(() => {
+                                newPosts.push({ ...snapshot.docs[i].data(), ...userData, ...{ postId: snapshot.docs[i].id } });
+                            })
+                }
+            }
+
+            this.setState({ posts: newPosts })
+        } else {
+            this.setState({ lastDoc: null })
+        }
+        setTimeout(() => this.setState({ isLoading: false }), 1200)
+    }
+
+    getMore = async () => {
+        if (this.state.lastDoc) {
+            this.setState({ moreLoading: true });
+
+            setTimeout(async () => {
+                let snapshot = await Fire.shared
+                                        .firestore
+                                        .collection('posts')
+                                        .orderBy('timestamp', 'desc')
+                                        .startAfter(this.state.lastDoc.data().uid)
+                                        .limit(10)
+                                        .get();
+                if (!snapshot.empty) {
+                    let newPosts = this.state.posts;
+
+                    this.setState({ lastDoc: snapshot.docs[snapshot.docs.length - 1] });
+
+                    for (let i = 0; i < snapshot.docs.length; i++) {
+                        let userData = {}
+
+                        if (this.state.myFollowing.includes(snapshot.docs[i].data().userId) || 
+                            snapshot.docs[i].data().userId === Fire.shared.uid) {
+                                Fire.shared
+                                    .firestore
+                                    .collection('users')
+                                    .doc(snapshot.docs[i].data().userId)
+                                    .get()
+                                        .then(snap => userData = snap.data())
+                                        .then(() => {
+                                            newPosts.push({ ...snapshot.docs[i].data(), ...userData, ...{ postId: snapshot.docs[i].id } });
+                                        })
+                            }
+                    }
+
+                    this.setState({ posts: newPosts })
+                    if (snapshot.docs.length < 10) this.setState({ lastDoc: null });
+                } else {
+                    this.setState({ lastDoc: null });
+                }
+
+                this.setState({ moreLoading: false });
+            }, 1000);
+        }
+
+        onEndReachedCalledDuringMomentum = true;
+    }
+
+    onRefresh = () => {
+        setTimeout(() => {
+            this.getPosts();
+        }, 1000);
+    }
+
+    renderFooter = () => {
+        if (!this.state.moreLoading) return true;
+
         return (
-            <View style={styles.feedItem}>
-                <Image source={post.avatar} style={styles.avatar} />
-                <View style={{ flex: 1 }}>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                        <View>
-                            <Text style={styles.name}>{post.name}</Text>
-                            <Text style={styles.timestamp}>{moment(post.timestamp).fromNow()}</Text>
-                        </View>
+            <ActivityIndicator 
+                size="large"
+                color={'#D83E64'}
+                style={{ marginBottom: 10 }}
+            />
+        )
+    }
+    // renderPost = post => {
+    //     return (
+    //         <View style={styles.feedItem}>
+    //             <Image source={post.avatar} style={styles.avatar} />
+    //             <View style={{ flex: 1 }}>
+    //                 <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+    //                     <View>
+    //                         <Text style={styles.name}>{post.name}</Text>
+    //                         <Text style={styles.timestamp}>{moment(post.timestamp).fromNow()}</Text>
+    //                     </View>
 
-                        <Ionicons name="ellipsis-horizontal" size={24} color="#73788B" />
-                    </View>
+    //                     <Ionicons name="ellipsis-horizontal" size={24} color="#73788B" />
+    //                 </View>
 
-                    <Text style={styles.post}>{post.text}</Text>
+    //                 <Text style={styles.post}>{post.text}</Text>
 
-                    <Image source={post.image} style={styles.postImage} resizeMode="cover" />
+    //                 <Image source={post.image} style={styles.postImage} resizeMode="cover" />
 
-                    <View style={{ flexDirection: "row" }}>
-                        <Ionicons name="heart-outline" size={24} color="#73788B" style={{ marginRight: 16 }} />
-                        <Ionicons name="chatbubbles" size={24} color="#73788B" />
-                    </View>
-                </View>
-            </View>
-        );
-    };
+    //                 <View style={{ flexDirection: "row" }}>
+    //                     <Ionicons name="heart-outline" size={24} color="#73788B" style={{ marginRight: 16 }} />
+    //                     <Ionicons name="chatbubbles" size={24} color="#73788B" />
+    //                 </View>
+    //             </View>
+    //         </View>
+    //     );
+    // };
 
     render() {
         return (
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.headerTitle}>Feed</Text>
-                </View>
-
-                <FlatList 
-                    style={styles.feed} 
-                    data={posts} 
-                    renderItem={({ item }) => this.renderPost(item)} 
-                    keyExtractor={item => item.id}
+            <View style={{ flex: 1,backgroundColor:'#FFF' }}>
+             <StatusBar barStyle='light-content' hidden={false} backgroundColor='#7d86f8' translucent={false} />
+                <Header
+                    title={'Firebird'}
+                    LeftIcon={<MaterialIcons
+                        name='keyboard-arrow-left'
+                        color='#000'
+                        size={30}
+                    />}
+                    RightIcon={
+                        <TouchableRipple
+                            onPress={() => this.props.navigation.push('MessageScreen')}
+                            rippleColor="rgba(0, 0, 0, .32)"
+                            borderless={true}
+                        >
+                            <Entypo
+                                name='chat'
+                                color='#000'
+                                size={30}
+                            />
+                        </TouchableRipple>
+                    }
+                />
+                <FlatList
+                    vertical
                     showsVerticalScrollIndicator={false}
+                    data={this.state.posts}
+                    keyExtractor={item => item.timestamp.toString()}
+                    renderItem={({ item }) =>
+                        <PostCard
+                            userName={item.name}
+                            userAvatar={item.avatar}
+                            postId={item.postId}
+                            userId={this.state.uid}
+                            postImageUrl={item.image}
+                            postDescription={item.description}
+                            postLikes={item.likes}
+                            postComments={item.comments}
+                        />
+                    }
+                    ListFooterComponent={this.renderFooter}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.isLoading}
+                            onRefresh={this.onRefresh}
+                        />
+                    }
+                    initialNumToRender={2}
+                    onEndReachedThreshold={0.1}
+                    onMomentumScrollBegin={() => { onEndReachedCalledDuringMomentum = false; }}
+                    onEndReached={() => {
+                        if (!onEndReachedCalledDuringMomentum && !this.state.isLoading) {
+                            this.getMore();
+                        }
+                    }
+                    }
+
+                    ListEmptyComponent={<View style={{ alignItems:'center', justifyContent:'center' }} >
+                    <Image  style={{ resizeMode:'center', height: windowHeight, width: windowWidth }} source={require('../assets/images/empty.png')}></Image>
+                </View>}
+
                 />
             </View>
-        )
+        );
     }
 }
 

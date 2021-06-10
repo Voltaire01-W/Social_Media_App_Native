@@ -7,13 +7,16 @@ class Fire {
         firebase.initializeApp(firebaseConfig)
     }
 
-    addPost = async ({ text, localUri }) => {
+    addPost = async ({ description, localUri }) => {
         const remoteUri = await this.uploadPhotoAsync(localUri, `photos/${this.uid}/${Date.now()}`)
 
         return new Promise((res, rej) => {
             this.firestore.collection("posts").add({
-                text,
-                uid: this.uid,
+                userId: this.uid,
+                description,
+                comments: [],
+                likes: [],
+                uid: Math.floor((Math.random() * 1000000000)),
                 timestamp: this.timestamp,
                 image: remoteUri
             })
@@ -95,6 +98,10 @@ class Fire {
 
     get timestamp() {
         return Date.now()
+    }
+
+    get storage() {
+        return firebase.storage()
     }
 }
 

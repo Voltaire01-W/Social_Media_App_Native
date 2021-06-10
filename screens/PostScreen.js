@@ -1,48 +1,42 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput, Alert, ToastAndroid } from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
-import { Camera } from "expo-camera";
-import * as ImagePicker from 'expo-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import Fire from '../Fire';
+import firebase from 'firebase';
 
 
 export default function PostScreen({ navigation }) {
-    const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
-    const [hasCameraPermission, setHasCameraPermission] = useState(null);
-    const [camera, setCamera] = useState(null);
     const [image, setImage] = useState(null);
-    const [type, setType] = useState(Camera.Constants.Type.back);
-    const [text, setText] = useState("");
+    const [uploading, setUploading] = useState(false);
+    const [transferred, setTransferred] = useState(0);
+    const [uid, setUid] = useState('');
+    const [description, setDescription] = useState("");
 
     useEffect(() => {
-        (async () => {
-            const cameraStatus = await Camera.requestPermissionsAsync();
-            setHasCameraPermission(cameraStatus.status === 'granted');
-
-            const galleryStatus = await Camera.requestPermissionsAsync();
-            setHasGalleryPermission(galleryStatus.status === 'granted');
-        })();
+        setUid(firebase.auth().currentUser.uid)
     }, []);
 
-    const takePhoto = async () => {
-        if (camera) {
-            const data = await camera.takePictureAsync(null);
-            setImage(data.uri);
-        }
+    const takePhotoFromCamera = () => {
+        ImagePicker.openCamera({
+            width: 1200,
+            height: 780,
+            cropping: true
+        }).then((image) => {
+            const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+            setImage(imageUri);
+        });
     }
 
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [1, 1],
-            quality: 1,
+    const choosePhotoFromLibrary = () => {
+        ImagePicker.openPicker({
+            width: 1200,
+            height: 780,
+            cropping: true
+        }).then((image) => {
+            const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+            setImage(imageUri);
         });
-        console.log(result);
-
-        if (!result.cancelled) {
-            setImage(result.uri);
-        }
     };
 
     if (hasCameraPermission === null || hasGalleryPermission === null) {
@@ -52,17 +46,108 @@ export default function PostScreen({ navigation }) {
         return <Text>No access to camera</Text>
     };
 
-    const handlePost = () => {
-        Fire.shared
-            .addPost({ text: text.trim(), localUri: image })
-            .then(ref => {
-                setText("");
-                setImage(null)
-                navigation.goBack();
-            })
-            .catch(error => {
-                alert(error);
-            })
+    const handlePost = async () => {
+        if (image === null) {
+            if (description.length === 0) {
+                Alert.alert(
+                    'Empty!',
+                    'Please enter something to post...'
+                );
+            } else {
+                setUploading(true);
+                setTransferred(100)
+                try {
+                    firebase
+                        .firestore()
+                        .collection('posts')
+                        .add({
+                            userId: uid,
+                            description: description,
+                            comments: [],
+                            likes: [],
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                            uid: Math.floor((Math.random() * 1000000000))
+                        })
+                        .then(() => {
+                            setUploading(false);
+                            Toast.show({
+                                text1: "Uploaded",
+                                text2: "Please refresh your feed to see your post.",
+                                type: 'Success',
+                                visibilityTime: 4000,
+                                position: 'bottom',
+                                bottomOffset: 50
+                            });
+                            setUploading(false);
+                            setDescription("");
+                        })
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        } else {
+            const uploadUri = image;
+            let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+
+            const extension = filename.split('.').pop();
+            const name = filename.split('.').slice(0, -1).join('.');
+            filename = name + Date.now() + '.' + extension;
+
+            setUploading(true);
+            setTransferred(0);
+            console.log(filename, uploadUri)
+            const task = firebase
+                            .storage()
+                            .ref('postImages/' + filename)
+                            .putFile(uploadUri);
+
+            task.on('state_changed', (taskSnapshot) => {
+                console.log(
+                    `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+                );
+
+                setTransferred(
+                    Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100
+                );
+            });
+
+            try {
+                await task;
+
+                const url = await firebase
+                                    .storage()
+                                    .ref('postImage/' + filename)
+                                    .getDownloadURL()
+                console.log('URL', url)
+                firebase
+                    .firestore()
+                    .collection('posts')
+                    .add({
+                        imageUrl: url,
+                        userId: uid,
+                        description: description,
+                        comments: [],
+                        likes: [],
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        uid: Math.floor((Math.random() * 1000000000))
+                    })
+                    .then(() => {
+                        setUploading(false);
+                        Toast.show({
+                            text1: "Uploaded",
+                            text2: "Please refresh to see your new post.",
+                            type: "Success",
+                            visibilityTime: 4000,
+                            position: 'bottom',
+                            bottomOffset: 50
+                        });
+                        setImage(null);
+                        setDescription("");
+                    })
+            } catch (error) {
+                console.log(error);
+            }
+        }
     }
         return (
             <SafeAreaView style={styles.container}>

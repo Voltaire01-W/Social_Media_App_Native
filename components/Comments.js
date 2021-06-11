@@ -11,6 +11,7 @@ import {
 import { Avatar, TouchableRipple } from 'react-native-paper';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Fire from '../Fire';
+import Header from './Header';
 
 export default class Comments extends Component {
     constructor(props) {

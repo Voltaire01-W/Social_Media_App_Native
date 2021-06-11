@@ -144,7 +144,7 @@ export default class PostCard extends Component {
                                 size={25}
                             /> :
                                 <AntDesign 
-                                    name="heart"
+                                    name="hearto"
                                     color="#000"
                                     size={25}
                                 />}

@@ -151,37 +151,11 @@ export default class HomeScreen extends Component {
             />
         )
     }
-    // renderPost = post => {
-    //     return (
-    //         <View style={styles.feedItem}>
-    //             <Image source={post.avatar} style={styles.avatar} />
-    //             <View style={{ flex: 1 }}>
-    //                 <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-    //                     <View>
-    //                         <Text style={styles.name}>{post.name}</Text>
-    //                         <Text style={styles.timestamp}>{moment(post.timestamp).fromNow()}</Text>
-    //                     </View>
-
-    //                     <Ionicons name="ellipsis-horizontal" size={24} color="#73788B" />
-    //                 </View>
-
-    //                 <Text style={styles.post}>{post.text}</Text>
-
-    //                 <Image source={post.image} style={styles.postImage} resizeMode="cover" />
-
-    //                 <View style={{ flexDirection: "row" }}>
-    //                     <Ionicons name="heart-outline" size={24} color="#73788B" style={{ marginRight: 16 }} />
-    //                     <Ionicons name="chatbubbles" size={24} color="#73788B" />
-    //                 </View>
-    //             </View>
-    //         </View>
-    //     );
-    // };
 
     render() {
         return (
             <View style={{ flex: 1,backgroundColor:'#FFF' }}>
-             <StatusBar barStyle='light-content' hidden={false} backgroundColor='#7d86f8' translucent={false} />
+             <StatusBar barStyle='light-content' hidden={false} backgroundColor='#C62828' translucent={false} />
                 <Header
                     title={'Firebird'}
                     LeftIcon={<MaterialIcons

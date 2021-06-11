@@ -67,7 +67,7 @@ class App extends Component {
                         loop
                         source={require('./assets/phoenix.png')}
                     /> */}
-                    <Text style={{ marginBottom: 100, color: '#7D86F8', fontSize: 18, fontWeight: 'bold' }} >Firebird</Text>
+                    <Text style={{ marginBottom: 100, color: '#C62828', fontSize: 18, fontWeight: 'bold' }} >Firebird</Text>
                 </View>
             )
         }

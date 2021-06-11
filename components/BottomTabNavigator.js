@@ -41,9 +41,9 @@ export default class BottomTabNavigator extends Component {
                         }}
 
                     />
-                    <Tabs.Screen name="Notification" component={NotificationNavigator} 
+                    <Tabs.Screen name="Notifications" component={NotificationNavigator} 
                         options={{
-                            tabBarButton: (props) => <Tab label="notification" {...props} />,
+                            tabBarButton: (props) => <Tab label="notifications" {...props} />,
                         }}
 
                     />

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput, Alert, ActivityIndicator } from 'react-native';
-import {Ionicons} from '@expo/vector-icons';
-import Toast from 'react-native-toast-message';
+import { View, StyleSheet, TouchableOpacity, Image, TextInput, Alert, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera } from 'expo-camera';
 import Fire from '../Fire';
-import firebase from 'firebase';
+import Header from '../components/Header'
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { TouchableRipple } from 'react-native-paper';
+import { MaterialIcons } from '@expo/vector-icons';
 import {
     InputField,
     InputWrapper,
@@ -104,18 +106,32 @@ export default function PostScreen({ navigation }) {
         }
     }
         return (
-            <SafeAreaView style={styles.container}>
-                <View style={styles.header}>
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <Ionicons name="arrow-back" size={24} color="#D8D9DB"/>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handlePost}>
-                        <Text style={{ fontWeight: "bold" }}>Post</Text>
-                    </TouchableOpacity>
-                </View>
+            <>
+                <Header
+                    LeftIcon={
+                        <TouchableRipple
+                            onPress={() => { }}
+                            rippleColor="rgba(0, 0, 0, .32)"
+                            borderless={true}
+                        >
+                            <MaterialIcons
+                                name='keyboard-arrow-left'
+                                color='#000'
+                                size={30}
+                            />
+                        </TouchableRipple>
+                    }
+                    title={'Post'}
+                    RightIcon={<MaterialIcons
+                        name='add-to-photos'
+                        color='#000'
+                        size={30}
+                        onPress={handlePost}
+                    />}
+                />
 
                 <View style={styles.inputContainer}>
-                    <Image source={require("../assets/tempAvatar.jpg")} style={styles.avatar}></Image>
+
                     <TextInput 
                         autoFocus={true} 
                         multiline={true} 
@@ -130,24 +146,33 @@ export default function PostScreen({ navigation }) {
                         </StatusWrapper> ) : null}   
                 </View>
 
-                <TouchableOpacity style={styles.photo} onPress={takePhotoFromCamera}>
-                    <Ionicons name="camera-outline" size={32} color="#D8D9DB"></Ionicons>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.photo} onPress={choosePhotoFromLibrary}>
-                    <Ionicons name="md-images-outline" size={32} color="#D8D9DB"></Ionicons>
-                </TouchableOpacity>
+                <ActionButton buttonColor="#C62828">
+                    <ActionButton.Item
+                        buttonColor="#e95950"
+                        title="Take Photo"
+                        onPress={takePhotoFromCamera}>
+                        <Icon name="camera-outline" style={styles.actionButtonIcon} />
+                    </ActionButton.Item>
+                    <ActionButton.Item
+                        buttonColor="#951E1E"
+                        title="Choose Photo"
+                        onPress={choosePhotoFromLibrary}>
+                        <Icon name="md-images-outline" style={styles.actionButtonIcon} />
+                    </ActionButton.Item>
+                </ActionButton>
 
                 <View style={{ marginHorizontal: 32, marginTop: 32, height: 150}}>
                     {image && <Image source={{uri: image}} style={{ flex: 1 }}></Image>}
                 </View>
-            </SafeAreaView>
+            </>
         );
     }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     header: {
         flexDirection: "row",
@@ -157,6 +182,11 @@ const styles = StyleSheet.create({
         paddingTop: 100,
         borderBottomWidth: 1,
         borderBottomColor: "#D8D9DB"
+    },
+    actionButtonIcon: {
+        fontSize: 32,
+        height: 32,
+        color: 'white'
     },
     inputContainer: {
         margin: 32,

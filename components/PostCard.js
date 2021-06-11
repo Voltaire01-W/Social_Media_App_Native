@@ -103,8 +103,8 @@ export default class PostCard extends Component {
             <View style={styles.post}>
                 <View style={styles.header} >
                     <View style={{ alignItems: 'center', flexDirection: 'row' }} >
-                        <Avatar.Image size={30} source={{ uri: this.props.userAvatar }} />
-                        <Text style={{ marginLeft: 15 }}>{this.props.userName}</Text>
+                        <Avatar.Image size={50} source={{ uri: this.props.userAvatar }} style={{ marginTop: -15, marginLeft: -15}} />
+                        <Text style={{ marginLeft: 15, marginBottom: 15 }}>{this.props.userName}</Text>
                     </View>
                     <TouchableRipple
                         onPress={() => console.log('Pressed')}
@@ -115,6 +115,7 @@ export default class PostCard extends Component {
                             name='dots-three-vertical'
                             color='#000'
                             size={20}
+                            style={{ marginBottom: 15 }}
                         />
                     </TouchableRipple>
 

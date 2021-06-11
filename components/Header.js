@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
     StyleSheet,
     View,
@@ -9,7 +9,7 @@ const Header = ({ title, RightIcon }) => {
 
     return (
         <View style={styles.main} >
-            <Text style={styles.profile__header} >{title}</Text>
+            <Text style={styles.profileHeader} >{title}</Text>
                 {RightIcon}
         </View>
     );
@@ -34,13 +34,13 @@ const styles = StyleSheet.create({
 
         elevation: 5,
     },
-    profile__icons: {
+    profileIcons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%'
     },
-    profile__header: {
-        color: '#7d86f8',
+    profileHeader: {
+        color: '#C62828',
         fontWeight: 'bold',
         fontSize: 18,
     }

@@ -88,6 +88,10 @@ class Fire {
         firebase.auth().signOut();
     }
 
+    get auth() {
+        return firebase.auth()
+    }
+
     get firestore() {
         return firebase.firestore()
     }

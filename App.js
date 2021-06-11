@@ -1,107 +1,77 @@
-import React from "react";
+import React, { Component } from "react";
+import { View, Text } from "react-native";
 
-import { createAppContainer, createSwitchNavigator } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
-import { createBottomTabNavigator } from "react-navigation-tabs";
-import { Ionicons } from "@expo/vector-icons";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
 
-import LoadingScreen from './screens/LoadingScreen';
+import Fire from "./Fire";
+import LottieView from 'lottie-react-native';
+import Toast from "react-native-toast-message";
+
+import LandingScreen from './screens/LandingScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import BottomTabNavigator from "./components/BottomTabNavigator";
 
-import HomeScreen from './screens/HomeScreen';
-import MessageScreen from './screens/MessageScreen';
-import NotificationScreen from './screens/NotificationScreen';
-import PostScreen from './screens/PostScreen';
-import ProfileScreen from './screens/ProfileScreen';
+const Stack = createStackNavigator();
 
-const AppContainer = createStackNavigator(
-    {
-        default: createBottomTabNavigator(
-            {
-                Home: {
-                    screen: HomeScreen,
-                    navigationOptions: {
-                        tabBarIcon: ({ tintColor }) => <Ionicons name="home" size={24} color={tintColor} />
-                    }
-                },
-                Message: {
-                    screen: MessageScreen,
-                    navigationOptions: {
-                        tabBarIcon: ({ tintColor }) => <Ionicons name="chatbubbles" size={24} color={tintColor} />
-                    }
-                },
-                Post: {
-                    screen: PostScreen,
-                    navigationOptions: {
-                        tabBarIcon: ({ tintColor }) => 
-                            <Ionicons 
-                                name="add-circle" 
-                                size={48} 
-                                color="#C62828"
-                                style={{
-                                    marginLeft: 2,
-                                    shadowColor: "#C62828",
-                                    shadowOffset: { width: 0, height: 10 },
-                                    shadowRadius: 10,
-                                    shadowOpacity: 0.3
-                                }} />
-                    }
-                },
-                Notification: {
-                    screen: NotificationScreen,
-                    navigationOptions: {
-                        tabBarIcon: ({ tintColor }) => <Ionicons name="notifications" size={24} color={tintColor} />
-                    }
-                },
-                Profile: {
-                    screen: ProfileScreen,
-                    navigationOptions: {
-                        tabBarIcon: ({ tintColor }) => <Ionicons name="person" size={24} color={tintColor} />
-                    }
-                }
-            },
-            {
-                defaultNavigationOptions: {
-                    tabBarOnPress: ({ navigation, defaultHandler }) => {
-                        if (navigation.state.key === "Post") {
-                            navigation.navigate("postModal")
-                        } else {
-                            defaultHandler()
-                        }
-                    }
-                },
-                tabBarOptions: {
-                    activeTintColor: "#C62828",
-                    inactiveTintColor: "#BBBBC4",
-                    showLabel: false
-                }
-            }
-        ),
-        postModal: {
-            screen: PostScreen
-        }
-    },
-    {
-        mode: "modal",
-        headerMode: "none",
+class App extends Component {
+
+    state = {
+        loggedIn: null
     }
-);
 
-const AuthStack = createStackNavigator({
-    Login: LoginScreen,
-    Register: RegisterScreen
-});
-
-export default createAppContainer(
-    createSwitchNavigator(
-        {
-            Loading: LoadingScreen,
-            App: AppContainer,
-            Auth: AuthStack
-        },
-        {
-            initialRouteName: "Loading"
+    componentDidMount() {
+        setTimeout(() => Fire.shared.auth.onAuthStateChanged((user) => {
+            if (user) {
+                this.setState({
+                    loggedIn: true
+                })
+            } else {
+                this.setState({
+                    loggedIn: false
+                })
+            }
+        }), 2200)
+    }
+    render() {
+        switch (this.state.loggedIn) {
+            case false:
+                return (
+                    <>
+                        <NavigationContainer>
+                            <Stack.Navigator>
+                                <Stack.Screen options={{ headerShown: false }} name="LandingScreen" component={LandingScreen}/>
+                                <Stack.Screen options={{ headerShown: false }} name="LoginScreen" component={LoginScreen}/>
+                                <Stack.Screen options={{ headerShown: false }} name="RegisterScreen" component={RegisterScreen}/>
+                            </Stack.Navigator>
+                        </NavigationContainer>
+                        <Toast ref={(ref) => Toast.setRef(ref)} />
+                    </>
+                );
+            case true:
+                return (
+                    <>
+                    <BottomTabNavigator />
+                    <Toast ref={(ref) => Toast.setRef(ref)} />
+                    </>
+                )
+            default:
+                return (
+                <View style={{ flex: 1, backgroundColor: "#FFF", alignItems: 'center', justifyContent: 'flex-end' }} >
+                    {/* <LottieView 
+                        ref={animation => {
+                            this.animation = animation;
+                        }}
+                        autoPlay
+                        loop
+                        source={require('./assets/phoenix.png')}
+                    /> */}
+                    <Text style={{ marginBottom: 100, color: '#7D86F8', fontSize: 18, fontWeight: 'bold' }} >Firebird</Text>
+                </View>
+            )
         }
-    )
-)
+    }
+};
+
+export default App;

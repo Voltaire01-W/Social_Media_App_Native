@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, TouchableOpacity, Image, TextInput, Alert, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Button, Image, TextInput, Alert, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera } from 'expo-camera';
 import Fire from '../Fire';
@@ -26,22 +26,29 @@ export default function PostScreen({ navigation }) {
     const [uploading, setUploading] = useState(false);
     const [transferred, setTransferred] = useState(0);
     const [uid, setUid] = useState('');
+    const [type, setType] = useState(null);
     const [description, setDescription] = useState("");
 
     useEffect(() => {
         (async () => {
-            const cameraStatus = await Camera.requestPermissionsAsync();
+            const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
             setHasCameraPermission(cameraStatus.status === 'granted');
-            const galleryStatus = await Camera.requestPermissionsAsync();
+            const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
             setHasGalleryPermission(galleryStatus.status === 'granted');
         })();
         setUid(Fire.shared.uid)
     }, []);
 
     const takePhotoFromCamera = async () => {
-        if (camera) {
-            const data = await camera.takePictureAsync(null);
-            setImage(data.uri);
+        const permissionResult = hasCameraPermission;
+        if (permissionResult.granted === false) {
+            alert("You've refused to allow this app to access your camera.");
+            return;
+        }
+
+        const result = await ImagePicker.launchCameraAsync();
+        if (!result.cancelled) {
+            setImage(result.uri);
         }
     }
 
@@ -145,12 +152,12 @@ export default function PostScreen({ navigation }) {
                             <ActivityIndicator size="large" color="#0000ff" />
                         </StatusWrapper> ) : null}   
                 </View>
-
                 <ActionButton buttonColor="#C62828">
                     <ActionButton.Item
                         buttonColor="#e95950"
                         title="Take Photo"
-                        onPress={takePhotoFromCamera}>
+                        onPress={takePhotoFromCamera}
+                        >
                         <Icon name="camera-outline" style={styles.actionButtonIcon} />
                     </ActionButton.Item>
                     <ActionButton.Item
@@ -160,6 +167,7 @@ export default function PostScreen({ navigation }) {
                         <Icon name="md-images-outline" style={styles.actionButtonIcon} />
                     </ActionButton.Item>
                 </ActionButton>
+                
 
                 <View style={{ marginHorizontal: 32, marginTop: 32, height: 150}}>
                     {image && <Image source={{uri: image}} style={{ flex: 1 }}></Image>}
@@ -201,5 +209,9 @@ const styles = StyleSheet.create({
     photo: {
         alignItems: "flex-end",
         marginHorizontal: 32
-    }
+    },
+    fixedRatio: {
+        flex: 1,
+        aspectRatio: 1
+      }
 })

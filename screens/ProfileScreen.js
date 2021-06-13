@@ -145,7 +145,7 @@ export default class ProfileScreen extends Component {
                             }}
                         >
                             <TouchableRipple
-                                onPress={() => this.signout()}
+                                onPress={() => Fire.shared.signOut()}
                                 rippleColor="rgba(0, 0, 0, .32)"
                                 borderless={true}
                                 style={styles.bottomButtons}

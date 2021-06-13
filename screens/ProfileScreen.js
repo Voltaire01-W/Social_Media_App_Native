@@ -68,11 +68,13 @@ export default class ProfileScreen extends Component {
                     posts.docs.map((post) => {
                         p.push({ ...post.data(), ...{ postId: post.id } })
                     })
-                    this.setState({ myPosts: p })
+                    this.setState({ myPosts: p, loading: false })
                 })
     }
 
     render() {
+        switch (this.state.loading) {
+            case false:
                 return (
                     <View style={styles.profileScreen} >
 
@@ -190,6 +192,11 @@ export default class ProfileScreen extends Component {
                             null}
                     </View>
                 );
+            default:
+                return <View style={styles.loading} >
+                    <ActivityIndicator size='large' color='#303233' />
+                </View>
+            }
         }
     }
 

@@ -24,7 +24,7 @@ export default class FollowerScreen extends Component {
     }
 
     componentDidMount() {
-        if (this.props.route.params.data.length) {
+        if (this.props.data.length) {
             
             this.getUserData()
         }
@@ -32,7 +32,7 @@ export default class FollowerScreen extends Component {
 
     getUserData = async () => {
 
-        let followers = this.props.route.params.data
+        let followers = this.props.data
         let users = []
 
         for (let i = 0; i < followers.length; i++) {
@@ -50,7 +50,7 @@ export default class FollowerScreen extends Component {
                 return (
                     <>
                         <Header 
-                            title={this.props.route.params.title}
+                            title={this.props.title}
                             LeftIcon={<TouchableRipple
                                 onPress={() => this.props.navigation.goBack()}
                                 rippleColor="rgba(0, 0, 0, .32)"
@@ -73,7 +73,7 @@ export default class FollowerScreen extends Component {
                         >
                             {this.state.usersData.map((user) => (
                                 <TouchableRipple
-                                    onPress={() => this.props.route.params.navigation.push('ProfileScreen', { uid: user.uid })}
+                                    onPress={() => this.props.navigation.push('ProfileScreen', { uid: user.uid })}
                                     rippleColor="rgba(0, 0, 0, .32)"
                                 >
                                     <UserListItem

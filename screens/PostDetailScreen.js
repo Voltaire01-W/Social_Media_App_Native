@@ -15,9 +15,9 @@ export default class PostDetailScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            name: this.props.route.params.userName,
-            avatar: this.props.route.params.avatar,
-            postItem: this.props.route.params.postData,
+            name: this.props.userName,
+            avatar: this.props.avatar,
+            postItem: this.props.postData,
             uid: Fire.shared.uid
         }
     }

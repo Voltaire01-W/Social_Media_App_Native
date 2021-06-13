@@ -24,13 +24,13 @@ export default class EditProfileScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            uid: this.props.route.params.uid,
-            name: this.props.route.params.name,
-            email: this.props.route.params.email,
-            about: this.props.route.params.about,
+            uid: this.props.uid,
+            name: this.props.name,
+            email: this.props.email,
+            about: this.props.about,
             loading: false,
-            image: this.props.route.params.avatar,
-            website:  this.props.route.params.website,
+            image: this.props.avatar,
+            website:  this.props.website,
             avatarRemoved: false
         }
     }
@@ -84,7 +84,7 @@ export default class EditProfileScreen extends Component {
             return;
         }
         this.setState({ loading: true })
-        if (this.state.image !== this.props.route.params.avatar && !this.state.avatarRemoved) {
+        if (this.state.image !== this.props.avatar && !this.state.avatarRemoved) {
             const uploadUri = this.state.image;
             let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
 

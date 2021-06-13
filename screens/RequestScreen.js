@@ -33,9 +33,9 @@ export default class RequestScreen extends Component {
             loading: false,
             requestsData: [],
             uid: Fire.shared.uid,
-            requests: this.props.route.params.data,
-            chats: this.props.route.params.chats,
-            bgColor: this.props.route.params.bgColor
+            requests: this.props.data,
+            chats: this.props.chats,
+            bgColor: this.props.bgColor
         }
     }
 

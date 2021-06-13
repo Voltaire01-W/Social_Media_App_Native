@@ -114,7 +114,7 @@ export default class RegisterScreen extends Component {
 
                 <TouchableOpacity 
                     style={{alignSelf: "center", marginTop: 32 }}
-                    onPress={() => this.props.navigation.navigate("Login")}
+                    onPress={() => this.props.navigation.navigate("LoginScreen")}
                 >
                     <Text style={{ 
                             color: "white", 

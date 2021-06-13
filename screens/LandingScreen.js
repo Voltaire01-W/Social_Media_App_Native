@@ -25,7 +25,7 @@ const LandingScreen = ({ navigation }) => {
     >
     <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#FFF" translucent={true} />
       <ImageBackground
-        source={require("../assets/phoenix.jpg")}
+        source={require("../assets/background.jpg")}
         resizeMode='stretch'
         style={styles.image2}
         imageStyle={styles.image2ImageStyle}
@@ -48,7 +48,7 @@ const LandingScreen = ({ navigation }) => {
             backgroundColor:'#FFF'
           }}>
           <Image
-            source={require('../assets/phoenix.png')}
+            source={require('../assets/phoenix.jpg')}
             style={styles.logo}
           ></Image>
         </View>
@@ -116,8 +116,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF'
   },
   post: {
-    fontFamily: "roboto-700",
-    color: "rgba(125,134,248,1)",
+    fontFamily: "sans-serif",
+    color: "#C62828",
     fontSize: 28,
     textAlign: "center",
     fontWeight:'bold'
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     height: 75,
     width: 75,
     borderRadius: 50,
-    shadowColor: "rgba(0,0,0,1)",
+    shadowColor: "#C62828",
     shadowOffset: {
       width: 10,
       height: 10
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     shadowOpacity: 0.15,
     shadowRadius: 0,
-    backgroundColor: "rgba(125,134,248,1)",
+    backgroundColor: "#C62828",
     padding: 10,
     paddingHorizontal: 15,
     alignItems: 'center',
@@ -160,8 +160,8 @@ const styles = StyleSheet.create({
   },
   txtbelow: {
     marginTop: 5,
-    fontFamily: "roboto-regular",
-    color: "rgba(126,146,166,1)",
+    fontFamily: "sans-serif",
+    color: "#C62828",
     textAlign: "center",
     fontSize: 13,
     opacity: 0.81

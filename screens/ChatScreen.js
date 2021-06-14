@@ -41,7 +41,7 @@ export default class ChatScreen extends Component {
         super(props)
         this.state = {
             loading: false,
-            chatId: this.props.chatId,
+            chatId: this.props.route.params.chatId,
             blocked: false,
             blockId: [],
             messages: [],
@@ -49,17 +49,17 @@ export default class ChatScreen extends Component {
             textMessage: '',
             colorModal: false,
             saveColorLoading: false,
-            bgColor: this.props.bgColor,
+            bgColor: this.props.route.params.bgColor,
         }
     }
 
 
     componentDidMount() {
         this.setState({
-            blocked: this.props.blocked,
-            blockId: this.props.blockId,
+            blocked: this.props.route.params.blocked,
+            blockId: this.props.route.params.blockId,
         })
-        console.log(this.props.uid)
+        console.log(this.props.route.params.uid)
         if (typeof this.state.chatId !== 'undefined') {
             this.getChats()
         }
@@ -157,10 +157,10 @@ export default class ChatScreen extends Component {
                 typing: []
             }).then(() => Fire.shared.firestore.collection('users').doc(Fire.shared.uid).update({
                 chats: Fire.shared.firestore.FieldValue.arrayUnion({
-                    uid: this.props.uid,
+                    uid: this.props.route.params.uid,
                     chatId: this.state.chatId
                 })
-            })).then(() => Fire.shared.firestore.collection('users').doc(this.props.uid).update({
+            })).then(() => Fire.shared.firestore.collection('users').doc(this.props.route.params.uid).update({
                 chats: Fire.shared.firestore.FieldValue.arrayUnion({
                     uid: Fire.shared.uid,
                     chatId: this.state.chatId
@@ -293,10 +293,10 @@ export default class ChatScreen extends Component {
                         </TouchableRipple>
 
                         <View style={{ flexDirection: 'row', alignItems: 'center' }} >
-                            <Avatar.Image size={40} source={{ uri: this.props.avatar }} />
+                            <Avatar.Image size={40} source={{ uri: this.props.route.params.avatar }} />
                             <View>
-                                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#23395D', marginLeft: 10 }} >{this.props.name}</Text>
-                                {this.state.typing.includes(this.props.uid) ?
+                                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#23395D', marginLeft: 10 }} >{this.props.route.params.name}</Text>
+                                {this.state.typing.includes(this.props.route.params.uid) ?
                                     <Text style={{ color: '#1aa260' }} >typing...</Text>
                                     :
                                     null}

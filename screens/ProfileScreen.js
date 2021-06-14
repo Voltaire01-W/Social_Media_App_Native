@@ -30,7 +30,7 @@ export default class ProfileScreen extends Component {
     }
 
     componentDidMount() {
-        const user = this.props.uid || Fire.shared.uid;
+        const user = this.props.route.params.uid || Fire.shared.uid;
 
         this.setState({ uid: user },
             () => this.getUserData())
@@ -118,7 +118,7 @@ export default class ProfileScreen extends Component {
                                     following={this.state.following}
                                     posts={this.state.myPosts}
                                     website={this.state.website}
-                                    propsid={this.props.uid}
+                                    propsid={this.props.route.params.uid}
                                     about={this.state.about}
                                     myprofile={this.state.uid === Fire.shared.uid}
                                     requests={this.state.requests}
@@ -175,7 +175,7 @@ export default class ProfileScreen extends Component {
                                 </View>
                             </TouchableRipple>
                         </RBSheet>
-                        { this.props.uid === undefined || this.props.uid === Fire.shared.uid ?
+                        { this.props.route.params.uid === undefined || this.props.route.params.uid === Fire.shared.uid ?
                             <FAB
                                 style={styles.fab}
                                 icon="pencil"

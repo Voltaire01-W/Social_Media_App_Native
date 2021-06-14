@@ -13,6 +13,13 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import BottomTabNavigator from "./components/BottomTabNavigator";
 
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Setting a timer for a long period of time']);
+LogBox.ignoreLogs(['VirtualizedList']);
+LogBox.ignoreLogs(['Animated: ']);
+LogBox.ignoreLogs(['Attempted import error: ']);
+
 const Stack = createStackNavigator();
 
 class App extends Component {
